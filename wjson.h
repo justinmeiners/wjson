@@ -1,14 +1,22 @@
-// Created By: Justin Meiners (2022)
+/* It at least one source file do this:
 
-// It at least one source file do this:
-//  #define W_JSON_IMPLEMENTATION
-//  #include "wjson.h"
+    #define W_JSON_IMPLEMENTATION
+    #include "wjson.h"
 
-// If putc_unlocked is giving you trouble (non POSIX systems), then also define:
-// W_JSON_NO_STDIO_UNLOCK
+If putc_unlocked is giving you trouble (non POSIX systems), then also add:
+
+    #define W_JSON_NO_STDIO_UNLOCK
+
+Created By: Justin Meiners (2022). MIT License (see end).
+*/
 
 #ifndef W_JSON_INCLUDE
 #define W_JSON_INCLUDE
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -49,6 +57,10 @@ void wJson_doublev(wJson* writer, int n, const double* v);
 void wJson_intv(wJson* writer, int n, const int* v);
 void wJson_stringv(wJson* writer, int n, const char** strings);
 void wJson_pairv(wJson* writer, int n, const char** keys, const char** vals);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 
@@ -232,4 +244,11 @@ void wJson_pairv(wJson* w, int n, const char** keys, const char** vals) {
 #endif
 
 #endif
+
+/*
+   Copyright 2022 Justin Meiners
+   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+   The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 
