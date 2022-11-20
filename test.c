@@ -3,8 +3,7 @@
 
 void test_simple(wJson* w) {
     wJson_object(w);
-    wJson_key(w, "name");
-    wJson_string(w, "Bob");
+    wJson_string_pair(w, "name", "bob");
 
     wJson_key_raw(w, "age");
     wJson_int(w, 40);

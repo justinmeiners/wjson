@@ -8,6 +8,8 @@ assert(data["test_escape"]["line\nbreak"])
 
 print("PASS")
 
+json.dump(data, sys.stdout, indent=4)
+
 
 
 

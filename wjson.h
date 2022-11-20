@@ -53,10 +53,12 @@ void wJson_array(wJson* writer);
 void wJson_end(wJson* writer);
 
 // Helpers for writing arrays and other common structures.
+void wJson_string_pair(wJson* writer, const char* key, const char* val);
+
 void wJson_doublev(wJson* writer, int n, const double* v);
 void wJson_intv(wJson* writer, int n, const int* v);
 void wJson_stringv(wJson* writer, int n, const char** strings);
-void wJson_pairv(wJson* writer, int n, const char** keys, const char** vals);
+void wJson_string_pairv(wJson* writer, int n, const char** keys, const char** vals);
 
 #ifdef __cplusplus
 }
@@ -212,6 +214,11 @@ void wJson_end(wJson* w) {
     assert(w->depth >= 0);
 }
 
+void wJson_string_pair(wJson* w, const char* key, const char* val) {
+    wJson_key(w, key);
+    wJson_string(w, val);
+}
+
 void wJson_doublev(wJson* w, int n, const double* v) {
     wJson_array(w);
     for (int i = 0; i < n; ++i) wJson_double(w, v[i]);
@@ -230,12 +237,9 @@ void wJson_stringv(wJson* w, int n, const char** strings) {
     wJson_end(w);
 }
 
-void wJson_pairv(wJson* w, int n, const char** keys, const char** vals) {
+void wJson_string_pairv(wJson* w, int n, const char** keys, const char** vals) {
     wJson_object(w);
-    for (int i = 0; i < n; ++i) {
-        wJson_key(w, keys[i]);
-        wJson_string(w, vals[i]);
-    } 
+    for (int i = 0; i < n; ++i) wJson_string_pair(w, keys[i], vals[i]);
     wJson_object(w);
 }
 
