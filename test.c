@@ -5,11 +5,9 @@ void test_simple(wJson* w) {
     wJson_object(w);
     wJson_string_pair(w, "name", "bob");
 
-    wJson_key_raw(w, "age");
-    wJson_int(w, 40);
-
-    wJson_key_raw(w, "height");
-    wJson_double(w, 5.11);
+    wJson_key_raw(w, "age"); wJson_int(w, 40);
+    wJson_key_raw(w, "height"); wJson_double(w, 5.11);
+    wJson_key(w, "citizen"); wJson_bool(w, 1);
     
     wJson_key(w, "children");
     const char* names[] = {

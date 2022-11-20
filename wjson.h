@@ -45,6 +45,7 @@ void wJson_string_raw(wJson* writer, const char* str);
 
 void wJson_int(wJson* writer, int x);
 void wJson_double(wJson* writer, double x);
+void wJson_bool(wJson* writer, int x);
 void wJson_null(wJson* writer);
 
 void wJson_object(wJson* writer);
@@ -178,6 +179,11 @@ void wJson_int(wJson* w, int x) {
 void wJson_double(wJson* w, double x) {
     begin_value_(w);
     fprintf(w->file, "%f", x);
+}
+
+void wJson_bool(wJson* w, int x) {
+    begin_value_(w);
+    fprintf(w->file, x ? "true" : "false");
 }
 
 void wJson_null(wJson* w) {
