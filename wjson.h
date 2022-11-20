@@ -4,21 +4,24 @@
 //  #define W_JSON_IMPLEMENTATION
 //  #include "wjson.h"
 
+// If putc_unlocked is giving you trouble (non POSIX systems), then also define:
+// W_JSON_NO_STDIO_UNLOCK
+
 #ifndef W_JSON_INCLUDE
 #define W_JSON_INCLUDE
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifndef W_JSON_STACK_DEPTH
-#define W_JSON_STACK_DEPTH 128
+#ifndef W_JSON_DEPTH_MAX
+#define W_JSON_DEPTH_MAX 128
 #endif
 
 typedef struct {
     FILE* file;
     int depth;
-    int stack[W_JSON_STACK_DEPTH];
-    int count[W_JSON_STACK_DEPTH];
+    int stack[W_JSON_DEPTH_MAX];
+    int count[W_JSON_DEPTH_MAX];
 } wJson;
 
 void wJson_init(wJson* writer, FILE* file);
@@ -51,7 +54,7 @@ void wJson_pairv(wJson* writer, int n, const char** keys, const char** vals);
 
 #ifdef W_JSON_IMPLEMENTATION
 
-#ifdef W_JSON_NO_UNLOCK
+#ifdef W_JSON_NO_STDIO_UNLOCK
 #define putc_unlocked putc
 #endif
 
@@ -172,7 +175,7 @@ void wJson_object(wJson* w) {
     begin_value_(w);
     putc_unlocked('{', w->file);
     ++w->depth;
-    assert(w->depth < W_JSON_STACK_DEPTH);
+    assert(w->depth < W_JSON_DEPTH_MAX);
     w->stack[w->depth] = W_JSON_BLOCK_OBJ;
     w->count[w->depth] = 0;
 }
@@ -181,7 +184,7 @@ void wJson_array(wJson* w) {
     begin_value_(w);
     putc_unlocked('[', w->file);
     ++w->depth;
-    assert(w->depth < W_JSON_STACK_DEPTH);
+    assert(w->depth < W_JSON_DEPTH_MAX);
     w->stack[w->depth] = W_JSON_BLOCK_ARRAY;
     w->count[w->depth] = 0;
 }
@@ -224,7 +227,7 @@ void wJson_pairv(wJson* w, int n, const char** keys, const char** vals) {
     wJson_object(w);
 }
 
-#ifdef W_JSON_NO_UNLOCK
+#ifdef W_JSON_NO_STDIO_UNLOCK
 #undef putc_unlocked putc
 #endif
 
