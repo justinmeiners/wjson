@@ -111,7 +111,7 @@ void write_string_escaped_(const char* s, FILE* file) {
     }
 }
 
-enum { W_JSON_BLOCK_OBJ, W_JSON_BLOCK_ARRAY };
+enum { W_JSON_BLOCK_OBJ, W_JSON_BLOCK_ARRAY, W_JSON_BLOCK_INITIAL };
 
 static
 void write_separator(wJson* w) {
@@ -123,10 +123,14 @@ void write_separator(wJson* w) {
 
 static
 void begin_value_(wJson* w) {
-    if (w->stack[w->depth] == W_JSON_BLOCK_ARRAY) {
-        write_separator(w);
-    } else {
-        assert(w->count[w->depth] % 1 == 0);
+    switch (w->stack[w->depth]) {
+        case W_JSON_BLOCK_ARRAY:
+            write_separator(w);
+        case W_JSON_BLOCK_OBJ:
+            assert(w->count[w->depth] % 1 == 0);
+        default:
+            break;
+
     }
     ++w->count[w->depth];
 }
@@ -142,10 +146,14 @@ void begin_key_(wJson* w) {
 void wJson_init(wJson* w, FILE* file) {
     w->file = file;
     w->depth = 0;
-    w->stack[0] = W_JSON_BLOCK_OBJ;
+    w->stack[0] = W_JSON_BLOCK_INITIAL;
+    w->count[0] = 0;
 }
 
-void wJson_shutdown(wJson* w) { assert(w->depth == 0); }
+void wJson_shutdown(wJson* w) {
+    assert(w->depth == 0);
+    assert(w->stack[0] = W_JSON_BLOCK_INITIAL);
+}
 
 void wJson_key_raw(wJson* w, const char* key) {
     begin_key_(w);
