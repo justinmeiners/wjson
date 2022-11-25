@@ -1,5 +1,5 @@
 #define W_JSON_IMPLEMENTATION
-#include "wjson.h"
+#include "w_json.h"
 
 void test_simple(wJson* w) {
     wJson_object(w);

@@ -1,11 +1,11 @@
 
 .PHONY: test
 
-test_wjson: test.c wjson.h
+test_w_json: test.c w_json.h
 	gcc $< -o $@
 
-test: test_wjson verify.py
-	./test_wjson | python3 verify.py
+test: test_w_json verify.py
+	./test_w_json | python3 verify.py
 
 
 
